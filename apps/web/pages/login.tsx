@@ -2,7 +2,7 @@ import { Button } from "@repo/ui";
 import { useContext } from "react";
 import { AuthContext } from "../components/authenticator";
 
-export async function Login() {
+export default function Login() {
   const context = useContext(AuthContext);
   const handleLogin = () => {
     context.setIsAuthenticated(true);

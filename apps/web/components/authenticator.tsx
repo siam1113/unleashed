@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { Login } from "../pages/login";
+import Login from "../pages/login";
 
 export const AuthContext = React.createContext({ isAuthenticated: false, setIsAuthenticated: (value: boolean) => { } });
 export function Authenticator({ children }: { children: ReactNode }) {
