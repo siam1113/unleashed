@@ -1,48 +1,70 @@
 import { Request, Response } from "express";
 import { DB_QUERY } from "../db/setup";
 import { SERVER_CONSTANTS } from "../constants/constants";
-import { createUser, get2FAKey, getUserByEmail, save2FAKey } from "../db/queries/users";
+import { createUser, get2FAKey, getUserByEmail, getUserByEmailPassword, save2FAKey, updateUser } from "../db/queries/users";
+
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
 
 export const processSignup = async (req: Request, res: Response) => {
   // validate duplicate user
-  const users = await DB_QUERY("unleased", getUserByEmail, { user: req.body });
+  const users = await DB_QUERY("unleashed", getUserByEmail, { user: req.body });
   if (users.length > 0) {
-    res.send({ message: SERVER_CONSTANTS.userAlreadyExists });
+    res.send({ message: SERVER_CONSTANTS.userAlreadyExists, statusCode: 409 });
     return;
   }
-
-  // create user
-  const newUser = await DB_QUERY("unleased", createUser, { user: req.body });
-  const insertId = newUser["insertedId"];
 
   // generate 2fa secret
   const secret = speakeasy.generateSecret({ length: 20 });
 
-  // save 2fa secret
-  await DB_QUERY("unleased", save2FAKey, { user: { userid: insertId, secret: secret.base32 } });
-
   // generate QR code
   const qrcode = await QRCode.toDataURL(secret.otpauth_url);
 
+  // create user
+  const newUser = await DB_QUERY("unleashed", createUser, { user: { ...req.body, qrcode: qrcode } });
+  const insertId = newUser["insertedId"];
+
+  // save 2fa secret
+  await DB_QUERY("unleashed", save2FAKey, { user: { userid: insertId.toString(), secret: secret.base32 } });
+
   insertId ?
-    res.send({ message: SERVER_CONSTANTS.signUpSuccess, insertId, qrcode })
-    : res.send({ message: SERVER_CONSTANTS.signUpFailed, error: newUser["error"] });
+    res.send({ message: SERVER_CONSTANTS.signUpSuccess, insertId, qrcode, statusCode: 200 })
+    : res.send({ message: SERVER_CONSTANTS.signUpFailed, error: newUser["error"], statusCode: 500 });
 }
 
 export const processLogin = async (req: Request, res: Response) => {
-  const user = await DB_QUERY("unleased", getUserByEmail, { user: req.body });
-  const userId = user[0]?._id
+  const user = await DB_QUERY("unleashed", getUserByEmailPassword, { user: req.body });
+  if (user.length === 0) {
+    res.send({ message: SERVER_CONSTANTS.userDoesNotExist, stausCode: 404 });
+    return;
+  }
+  const userId = user[0]?._id.toString();
+  const enable2FA = user[0]?.enable2FA;
+  const qrcode = user[0]?.qrcode;
+  res.send({ userId, enable2FA, qrcode, stausCode: 200 })
+}
+
+export const process2FA = async (req: Request, res: Response) => {
+  const verified = await verify2FA(req.body.userId, req.body.code);
+  await DB_QUERY("unleashed", updateUser, { user: { userid: req.body.userId, enable2FA: verified } });
+  return res.send({ userId: req.body.userId, verified, message: verified ? SERVER_CONSTANTS.twoFactorSuccess : SERVER_CONSTANTS.twoFactorFailed, statusCode: verified ? 200 : 401 });
+}
+
+export const setup2FA = async (req: Request, res: Response) => {
+  const verified = await verify2FA(req.body.userId, req.body.code);
+  await DB_QUERY("unleashed", updateUser, { user: { userid: req.body.userId, enable2FA: verified } });
+  return res.send({ userId: req.body.userId, verified, message: verified ? SERVER_CONSTANTS.twoFactorSetupSuccess : SERVER_CONSTANTS.twoFactorSetupFailed, statusCode: verified ? 200 : 401 });
+}
+
+
+const verify2FA = async (userId: string, code: string) => {
   const userSecret =
-    await DB_QUERY("unleased", get2FAKey, { user: { userid: userId } });
+    await DB_QUERY("unleashed", get2FAKey, { user: { userid: userId } });
   const verified = speakeasy.totp.verify({
     secret: userSecret[0]["secret"],
     encoding: "base32",
-    token: req.body["code"],
+    token: code,
     window: 1
   })
-  verified ?
-    res.send({ message: SERVER_CONSTANTS.loginSuccess, user: userSecret[0] })
-    : res.send({ message: SERVER_CONSTANTS.userNotAuthenticated, error: userSecret[0]["secret"] });
+  return verified;
 }

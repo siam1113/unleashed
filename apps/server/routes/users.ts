@@ -1,6 +1,6 @@
-import express from 'express';
+const express = require("express");
 const userRouter = express.Router();
-import { processSignup, processLogin } from "../processors/users";
+import { processSignup, processLogin, process2FA, setup2FA } from "../processors/users";
 
 userRouter.post("/signup", async (req: any, res: any) => {
   await processSignup(req, res);
@@ -8,6 +8,14 @@ userRouter.post("/signup", async (req: any, res: any) => {
 
 userRouter.post("/login", async (req: any, res: any) => {
   await processLogin(req, res);
+});
+
+userRouter.post("/setup-2fa", async (req: any, res: any) => {
+  await setup2FA(req, res);
+});
+
+userRouter.post("/verify-2fa", async (req: any, res: any) => {
+  await process2FA(req, res);
 });
 
 export { userRouter };
