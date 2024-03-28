@@ -15,7 +15,7 @@ export const processSignup = async (req: Request, res: Response) => {
   }
 
   // generate 2fa secret
-  const secret = speakeasy.generateSecret({ length: 20 });
+  const secret = speakeasy.generateSecret({ length: 20, name: "Unleashed: " + req.body.email });
 
   // generate QR code
   const qrcode = await QRCode.toDataURL(secret.otpauth_url);
