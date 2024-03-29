@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Experience } from "../types/type"
 
-export function Experience() {
+export function Experiences({ experiences, setExperiences }: { experiences: Experience[], setExperiences: Function }) {
   const emptyExp = {
     Company: "",
     Role: "",
@@ -12,13 +12,25 @@ export function Experience() {
   };
   const [addExperience, setAddExperience] = useState<boolean>(false);
   const [experience, setExperience] = useState<Experience>(emptyExp);
-  const [experiences, setExperiences] = useState<Experience[]>([]);
   const saveExpHandler = () => {
-    console.log(experience);
     setExperiences([...experiences, experience]);
     setAddExperience(false);
     setExperience(emptyExp);
   }
+
+  useEffect(() => {
+    const addExperiences = async () => {
+      const response = await fetch("http://localhost:8080/profile/experiences", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userid: sessionStorage.getItem("userId"), experiences }),
+      });
+      const resJson = await response.json();
+    }
+    addExperiences()
+  }, [experiences])
 
   const renderExperience = (experiences: Experience[]) => {
     return experiences.map((experience) => {

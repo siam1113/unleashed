@@ -3,6 +3,7 @@ const USER_COLLECTION = "users";
 const TWO_FA_COLLECTION = "2fa";
 
 export const getUserByEmail = async (db: Db, data: any) => {
+  console.log({ email: data["user"]["email"] });
   return await db.collection(USER_COLLECTION).find({ email: data["user"]["email"] }).toArray();
 }
 

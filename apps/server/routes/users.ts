@@ -2,6 +2,10 @@ const express = require("express");
 const userRouter = express.Router();
 import { processSignup, processLogin, process2FA, setup2FA } from "../processors/users";
 
+userRouter.get("/", async (req: any, res: any) => {
+  res.send("Hello World");
+});
+
 userRouter.post("/signup", async (req: any, res: any) => {
   await processSignup(req, res);
 });

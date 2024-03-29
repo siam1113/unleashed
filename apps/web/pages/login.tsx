@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../components/authenticator";
 import TwoFactorAuth from "../components/2fa";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const context = useContext(AuthContext);
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
@@ -43,12 +45,13 @@ export default function Login() {
     });
     const resJson = await response.json();
     console.log(resJson);
-    if (resJson.statusCode == 200) {
+    if (resJson.statusCode == 200 && userId) {
       context.setIsAuthenticated(true);
       alert(resJson.message);
+      sessionStorage.setItem("userId", userId);
       window.location.href = "/profile";
-    }
-    alert(resJson.message);
+    } else { alert(resJson.message); }
+
   }
 
   return <div className="flex flex-row justify-center w-screen h-screen">
@@ -60,7 +63,7 @@ export default function Login() {
             <input className="text-xl p-3 m-1 border rounded" type="email" placeholder="Your Email" onChange={(e) => setEmail(e.target.value)} />
             <input className="text-xl p-3 m-1 border rounded" type="password" placeholder="Your Password" onChange={(e) => setPassword(e.target.value)} />
             <button className="bg-primary text-white text-xl font-bold p-3 m-3 border rounded" onClick={(e) => handleLogin(e)}>Log In</button>
-            <a href="/signup" className="text-center text-primary text-xl font-bold">Don't have an account? Sign Up</a>
+            <a onClick={() => router.push("/signup")} className="text-center text-primary text-xl font-bold cursor-pointer">Don't have an account? Sign Up</a>
           </form>
         </div>
         <div className="w-1/2">

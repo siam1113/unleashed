@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { DB_QUERY } from "../db/setup";
 import { SERVER_CONSTANTS } from "../constants/constants";
 import { createUser, get2FAKey, getUserByEmail, getUserByEmailPassword, save2FAKey, updateUser } from "../db/queries/users";
+import { createProfile } from "../db/queries/profile";
 
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
@@ -24,6 +25,9 @@ export const processSignup = async (req: Request, res: Response) => {
   const newUser = await DB_QUERY("unleashed", createUser, { user: { ...req.body, qrcode: qrcode } });
   const insertId = newUser["insertedId"];
 
+  // create profile
+  await DB_QUERY("unleashed", createProfile, { userid: insertId.toString() });
+
   // save 2fa secret
   await DB_QUERY("unleashed", save2FAKey, { user: { userid: insertId.toString(), secret: secret.base32 } });
 
@@ -33,7 +37,9 @@ export const processSignup = async (req: Request, res: Response) => {
 }
 
 export const processLogin = async (req: Request, res: Response) => {
+  console.log(req.body);
   const user = await DB_QUERY("unleashed", getUserByEmailPassword, { user: req.body });
+  console.log(user);
   if (user.length === 0) {
     res.send({ message: SERVER_CONSTANTS.userDoesNotExist, stausCode: 404 });
     return;

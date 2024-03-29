@@ -8,6 +8,7 @@ export function NavBar() {
   const context = useContext(AuthContext);
   const handleLogout = () => {
     context.setIsAuthenticated(false);
+    sessionStorage.removeItem("userId");
     router.push("/");
   }
 

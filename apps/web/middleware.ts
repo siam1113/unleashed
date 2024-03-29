@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 export default function m(request: NextRequest) {
+  const userId = request.cookies.get('userId');
   return;
 }
 

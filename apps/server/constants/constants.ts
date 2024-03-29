@@ -9,4 +9,8 @@ export const SERVER_CONSTANTS = {
   twoFactorFailed: "2FA Failed, Please try again",
   twoFactorSetupSuccess: "2FA Setup Successfull",
   twoFactorSetupFailed: "2FA Setup Failed, Please try again",
+  skillAdded: "Skill added successfully",
+  experienceAdded: "Experience added successfully",
+  personalityAdded: "Personality added successfully",
+  somethingWentWrong: "Something went wrong, Check your data and Please try again",
 }

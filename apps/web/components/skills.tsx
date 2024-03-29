@@ -1,7 +1,7 @@
-import { useState } from "react"
+import React, { use, useEffect, useState } from "react"
 import { Skill } from "../types/type"
 
-export function Skills() {
+export function Skills({ skills, setSkills }: { skills: Skill[], setSkills: React.Dispatch<React.SetStateAction<Skill[]>> }) {
   const emptySkill: Skill = {
     Name: "",
     Introduction: "",
@@ -9,11 +9,9 @@ export function Skills() {
     Experience: "",
     References: []
   }
-
   const [addSkill, setAddSkill] = useState(false)
   const [skill, setSkill] = useState<Skill>(emptySkill)
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const renderSkills = (profile: any) => {
+  const renderSkills = (skills: Skill[]) => {
     return <div className="flex flex-row flex-wrap p-5">
       {skills.map((skill) => {
         return <div className="grow flex flex-col w-1/5 p-5 border border-2 rounded border-primary m-1">
@@ -55,14 +53,25 @@ export function Skills() {
     </div>
   }
 
-  const saveSkillHandler = () => {
-    if (skill.Name != "" || skill.Introduction != "" || skill.Proficiency != "" || skill.Experience != "" || skill.References.length > 0) {
-      setSkills([...skills, skill])
-      setSkill(emptySkill)
-      setAddSkill(false)
+  useEffect(() => {
+    const addSkill = async () => {
+      if (skills.length > 0) {
+        await fetch("http://localhost:8080/profile/skills", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userid: sessionStorage.getItem("userId"), skills }),
+        });
+      }
     }
-    else
-      alert("Please fill all the fields")
+    addSkill()
+  }, [skills])
+
+  const saveSkillHandler = async () => {
+    setSkills((currentSkills: Skill[]) => [...currentSkills, skill])
+    setAddSkill(false)
+    setSkill(emptySkill)
   }
 
   return <div className="flex flex-row w-full h-full">
@@ -73,7 +82,7 @@ export function Skills() {
       </div>
       {
         addSkill && <div className="flex flex-col mt-8 border-2 rounded border-primary p-5 m-6">
-          <h4 className="text-xl font-semibold">Add New Experince</h4>
+          <h4 className="text-xl font-semibold">Add New Skill</h4>
           <div className="flex flex-col">
             <label>Name</label>
             <input type="text" className="border border-primary rounded p-2"

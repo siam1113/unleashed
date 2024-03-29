@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+import { profileRouter } from "./routes/profile";
 import { userRouter } from "./routes/users";
 
 // App
@@ -9,7 +10,7 @@ app.use(cors())
 
 // Router
 app.use("/", userRouter);
-
+app.use("/profile", profileRouter);
 
 // Server
 app.listen(8080, () => {
