@@ -1,3 +1,5 @@
+import Image from "next/image"
+Image
 export function ProfileHighlights() {
   const profile = {
     "Personality": {
@@ -31,10 +33,10 @@ export function ProfileHighlights() {
   }
 
   return <div className="flex flex-row w-full h-full">
-    <div className="w-1/2">
-      <img src={"/person.jpg"} className="h-full w-full object-cover" alt="signup" />
+    <div className="w-1/3 relative">
+      <Image src={"/person.jpg"} fill alt="signup" />
     </div>
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col grow">
       <h1 className="text-left text-4xl text-primary font-bold p-3">Profile Highlights</h1>
       {renderProfile(profile)}
     </div>

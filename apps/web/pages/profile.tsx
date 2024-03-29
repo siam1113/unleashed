@@ -5,9 +5,11 @@ import { ReactNode, useContext, useState } from "react";
 import { ProfileHighlights } from "../components/profile-highlights";
 import { Skills } from "../components/skills";
 import { Experience } from "../components/experience";
+import { NavBar } from "../components/navbar";
+import { Personality } from "../components/personality";
 
 export default function Profile() {
-  const [activeTab, setActiveTab] = useState<ReactNode>(<Skills />);
+  const [activeTab, setActiveTab] = useState<ReactNode>(<Personality />);
   const router = useRouter();
   const context = useContext(AuthContext);
   const handleLogout = () => {
@@ -23,7 +25,7 @@ export default function Profile() {
       setActiveTab(<Skills />)
     }
     if (e.target.innerText === 'Personality') {
-      setActiveTab(<div>Personality</div>)
+      setActiveTab(<Personality />)
     }
 
     if (e.target.innerText === 'Experiences') {
@@ -31,14 +33,8 @@ export default function Profile() {
     }
   }
 
-  return <div className="flex flex-col h-screen w-screen">
-    <div className="w-full p-3 flex flex-row justify-between bg-primary mt-2">
-      <ul className="flex flex-row">
-        <li className="p-3 text-white border border-primary rounded text-lg font-medium bg-green-700 me-1">Find Your Team</li>
-        <li className="p-3 text-white border border-primary rounded text-lg font-medium bg-green-700 me-1">Your Profile</li>
-      </ul>
-      <Button color="p-3 text-white border border-primary rounded text-lg font-medium bg-green-600" onClick={handleLogout} >Logout</Button>
-    </div>
+  return <div className="flex flex-col w-full h-full">
+    <NavBar />
     <div className="w-full flex flex-col font-serif border border-primary rounded mt-2">
       <div className="flex flex-row w-full h-full">
         {

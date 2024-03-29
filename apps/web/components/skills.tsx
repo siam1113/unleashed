@@ -66,7 +66,7 @@ export function Skills() {
   }
 
   return <div className="flex flex-row w-full h-full">
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full p-3">
       <div className="flex flex-row justify-between">
         <h1 className="text-left text-4xl text-primary font-bold p-3">Skills & Abilities</h1>
         <button className="text-white text-lg font-semibold bg-secondary p-2 rounded m-3" onClick={() => setAddSkill(true)}> + Add Skill</button>
@@ -144,11 +144,11 @@ export function Skills() {
           </div>
         </div>
       }
-
       {skills.length == 0 ?
         <div className="flex flex-col mt-8 border rounded border-primary p-5">
           <h4 className="text-2xl font-bold">No Skills Added</h4>
-        </div> : renderSkills(skills)}
+        </div> : renderSkills(skills)
+      }
     </div>
   </div >
 }

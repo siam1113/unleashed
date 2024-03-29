@@ -19,3 +19,18 @@ export type Skill = {
   Experience: string;
   References: Reference[];
 }
+
+export type traits = {
+  introverted: number;
+  observant: number;
+  feeling: number;
+  judging: number;
+  assertive: number;
+}
+
+export type Personality = {
+  provider: string;
+  type: string;
+  traits: traits;
+  reportLink: string;
+}
