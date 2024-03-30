@@ -3,6 +3,8 @@ const cors = require('cors')
 const fileUpload = require('express-fileupload')
 import { profileRouter } from "./routes/profile";
 import { userRouter } from "./routes/users";
+const dotenv = require('dotenv')
+dotenv.config()
 
 // App
 const app = express();

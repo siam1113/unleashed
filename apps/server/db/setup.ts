@@ -1,7 +1,6 @@
-import { Db, MongoClient } from "mongodb";
+import { MongoClient } from "mongodb";
 import { queryFunction } from "../types/type";
-import dotenv from "dotenv";
-dotenv.config();
+
 
 const client = new MongoClient(process.env.MONGO_URI || "mongodb://localhost:27017");
 export const DB_QUERY =
