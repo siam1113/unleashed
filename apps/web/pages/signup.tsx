@@ -13,7 +13,7 @@ export default function SignUp() {
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
-    const response = await fetch("${process.env.SERVER}/signup", {
+    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export default function SignUp() {
 
   const handle2FA = async (e: any) => {
     e.preventDefault();
-    const response = await fetch("${process.env.SERVER}/setup-2fa", {
+    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/setup-2fa", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

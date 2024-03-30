@@ -21,7 +21,7 @@ export function Experiences({ experiences, setExperiences }: { experiences: Expe
 
   useEffect(() => {
     const addExperiences = async () => {
-      await fetch("${process.env.SERVER}/profile/experiences", {
+      await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/experiences", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -14,7 +14,7 @@ export default function Login() {
   const handleLogin = async (e: any) => {
     e.preventDefault();
     console.log(email, password);
-    const response = await fetch("${process.env.SERVER}/login", {
+    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export default function Login() {
   const handle2FA = async (e: any) => {
     e.preventDefault();
     const endpoint = enabled2FA ? "verify-2fa" : "setup-2fa";
-    const response = await fetch(`${process.env.SERVER}/${endpoint}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/${endpoint}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

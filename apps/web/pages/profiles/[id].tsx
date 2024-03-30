@@ -32,7 +32,7 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const response = await fetch(`${process.env.SERVER}/profile?userid=${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/profile?userid=${id}`, {
         method: "GET",
       });
       const resJson = await response.json();
