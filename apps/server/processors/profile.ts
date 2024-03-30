@@ -3,8 +3,8 @@ import { DB_QUERY } from "../db/setup";
 import { SERVER_CONSTANTS } from "../constants/constants";
 import { getProfile, updateExperiences, updatePersonality, updateProfileHighlights, updateSkill, uploadProfilePhoto } from "../db/queries/profile";
 import { uploadImage } from "../utils/cloudinary";
-import fs from "fs";
 import { generateProfileHighlights } from "../utils/gpt";
+const { unlink } = require('node:fs');
 
 export const processAddSkill = async (req: Request, res: Response) => {
   const { userid, skills } = req.body;
@@ -46,7 +46,7 @@ export const processUploadPhoto = async (req: any, res: Response) => {
   const profile = await DB_QUERY("unleashed", uploadProfilePhoto, { userid: req.body.userid, photourl: photourl });
   console.log("Profile: ", profile);
   res.status(200).send({ message: SERVER_CONSTANTS.photoUploaded, statusCode: 200, photourl });
-  photourl && fs.unlink(tempFilePath, (err) => {
+  photourl && unlink(tempFilePath, (err: any) => {
     if (err) {
       console.error(err);
       return;
