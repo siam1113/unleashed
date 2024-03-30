@@ -16,7 +16,7 @@ export function Skills({ skills, setSkills }: { skills: Skill[], setSkills: Reac
   useEffect(() => {
     const addSkill = async () => {
       if (skills.length > 0) {
-        await fetch("http://localhost:8080/profile/skills", {
+        await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/skills", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -30,7 +30,7 @@ export default function Profile() {
   useEffect(() => {
     const userid = sessionStorage.getItem("userId");
     const fetchProfile = async () => {
-      const response = await fetch(`http://localhost:8080/profile?userid=${userid}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/profile?userid=${userid}`, {
         method: "GET",
       });
       const resJson = await response.json();

@@ -8,7 +8,7 @@ export function Personality({ personality, setPersonality }: { personality: Pers
   useEffect(() => {
     const addPersonality = async () => {
       if (personality.provider != "") {
-        await fetch("http://localhost:8080/profile/personality", {
+        await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/personality", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
