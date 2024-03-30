@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { renderExperience, renderPersonality, renderProfileHighlights, renderSkills } from "../../renderers/renderers";
 import { Experience, Skill, Personality } from "../../types/type";
 import Image from "next/image"
-
+const server = process.env.NEXT_PUBLIC_SERVER;
 const emptyPersonality: Personality = {
   provider: "",
   type: "",
@@ -32,7 +32,7 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/profile?userid=${id}`, {
+      const response = await fetch(`${server}/profile?userid=${id}`, {
         method: "GET",
       });
       const resJson = await response.json();

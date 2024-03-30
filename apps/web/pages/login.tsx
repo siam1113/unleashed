@@ -11,10 +11,11 @@ export default function Login() {
   const [qrCode, setQrCode] = useState(undefined);
   const [enabled2FA, setEnabled2FA] = useState(false);
 
+  const server = process.env.NEXT_PUBLIC_SERVER;
   const handleLogin = async (e: any) => {
     e.preventDefault();
     console.log(email, password);
-    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/login", {
+    const response = await fetch(`${server}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +35,7 @@ export default function Login() {
   const handle2FA = async (e: any) => {
     e.preventDefault();
     const endpoint = enabled2FA ? "verify-2fa" : "setup-2fa";
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/${endpoint}`, {
+    const response = await fetch(`${server}/${endpoint}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

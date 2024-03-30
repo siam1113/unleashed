@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { Personality as PersonalityType } from "../types/type"
 import { renderPersonality } from "../renderers/renderers"
-
+const server = process.env.NEXT_PUBLIC_SERVER;
 export function Personality({ personality, setPersonality }: { personality: PersonalityType, setPersonality: Function }) {
   const [editPersonality, setEditPersonality] = useState<boolean>(false)
 
   useEffect(() => {
     const addPersonality = async () => {
       if (personality.provider != "") {
-        await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/personality", {
+        await fetch(`${server}/profile/personality`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

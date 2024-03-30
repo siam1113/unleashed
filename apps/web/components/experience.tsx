@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Experience } from "../types/type"
 import { renderExperience } from "../renderers/renderers";
+const server = process.env.NEXT_PUBLIC_SERVER;
 
 export function Experiences({ experiences, setExperiences }: { experiences: Experience[], setExperiences: Function }) {
   const emptyExp = {
@@ -21,7 +22,7 @@ export function Experiences({ experiences, setExperiences }: { experiences: Expe
 
   useEffect(() => {
     const addExperiences = async () => {
-      await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/experiences", {
+      await fetch(`${server}/profile/experiences`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

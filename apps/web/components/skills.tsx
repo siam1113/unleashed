@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Skill } from "../types/type"
 import { renderSkills } from "../renderers/renderers"
-
+const server = process.env.NEXT_PUBLIC_SERVER;
 export function Skills({ skills, setSkills }: { skills: Skill[], setSkills: React.Dispatch<React.SetStateAction<Skill[]>> }) {
   const emptySkill: Skill = {
     Name: "",
@@ -16,7 +16,7 @@ export function Skills({ skills, setSkills }: { skills: Skill[], setSkills: Reac
   useEffect(() => {
     const addSkill = async () => {
       if (skills.length > 0) {
-        await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/skills", {
+        await fetch(`${server}/profile/skills`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

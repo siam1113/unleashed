@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { renderProfileHighlights } from "../renderers/renderers"
 Image
+const server = process.env.NEXT_PUBLIC_SERVER;
 export function ProfileHighlights(
   { photo, setPhoto, highlights, setHighlights }: { photo: string, setPhoto: Function, highlights: string, setHighlights: Function }) {
 
@@ -10,7 +11,7 @@ export function ProfileHighlights(
     const formData = new FormData();
     formData.append("file", file);
     formData.append("userid", sessionStorage.getItem("userId") as string);
-    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/photo", {
+    const response = await fetch(`${server}/profile/photo`, {
       method: "POST",
       body: formData
     })
@@ -19,7 +20,7 @@ export function ProfileHighlights(
   }
 
   const handleGenerateProfileHighlights = async () => {
-    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/profile/generate-highlights", {
+    const response = await fetch(`${server}/profile/generate-highlights`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TwoFactorAuth from "../components/2fa";
 import { useRouter } from "next/navigation";
+const server = process.env.NEXT_PUBLIC_SERVER;
 
 export default function SignUp() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function SignUp() {
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
-    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/signup", {
+    const response = await fetch(`${server}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +33,7 @@ export default function SignUp() {
 
   const handle2FA = async (e: any) => {
     e.preventDefault();
-    const response = await fetch("${process.env.NEXT_PUBLIC_SERVER}/setup-2fa", {
+    const response = await fetch(`${server}/setup-2fa`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
