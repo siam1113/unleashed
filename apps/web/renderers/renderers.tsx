@@ -1,4 +1,4 @@
-import { Experience, Personality, Skill } from "../types/type"
+import { Experience, Personality, Skill, Trait } from "../types/type"
 import Markdown from 'react-markdown'
 
 export const renderPersonality = (personality: Personality) => {
@@ -15,10 +15,10 @@ export const renderPersonality = (personality: Personality) => {
       <h2 className="text-2xl text-primary font-bold p-3">Traits</h2>
       <div className="flex flex-row">
         {
-          Object.keys(personality.traits).map((trait) => {
+          Object.keys(personality.traits).map((trait: string) => {
             return <div className="flex flex-col w-1/5 p-3 text-center">
               <h3 className="text-lg font-semibold">{trait.toUpperCase()}</h3>
-              <p>{personality.traits[trait]}%</p>
+              <p>{personality.traits[trait as keyof (Trait)]}%</p>
             </div>
           })
         }

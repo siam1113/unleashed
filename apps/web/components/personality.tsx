@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { Personality } from "../types/type"
+import { Personality as PersonalityType } from "../types/type"
 import { renderPersonality } from "../renderers/renderers"
 
-export function Personality({ personality, setPersonality }: { personality: Personality, setPersonality: Function }) {
+export function Personality({ personality, setPersonality }: { personality: PersonalityType, setPersonality: Function }) {
   const [editPersonality, setEditPersonality] = useState<boolean>(false)
 
   useEffect(() => {
