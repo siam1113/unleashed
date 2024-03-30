@@ -1,7 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [
-    "**/.env.*local"
+    ".env.local"
+  ],
+  "globalEnv": [
+    "NEXT_PUBLIC_SERVER"
   ],
   "pipeline": {
     "build": {
@@ -11,9 +14,6 @@
       "outputs": [
         ".next/**",
         "!.next/cache/**"
-      ],
-      "dotEnv": [
-        ".env"
       ]
     },
     "lint": {
@@ -23,10 +23,7 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true,
-      "dotEnv": [
-        ".env"
-      ]
+      "persistent": true
     }
   }
 }

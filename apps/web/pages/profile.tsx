@@ -6,6 +6,7 @@ import { NavBar } from "../components/navbar";
 import { Personality } from "../components/personality";
 import { Skill, Experience, Personality as PType } from "../types/type";
 
+const server = process.env.NEXT_PUBLIC_SERVER;
 const emptyPersonality: PType = {
   provider: "",
   type: "",
@@ -28,9 +29,10 @@ export default function Profile() {
   const [highlights, setHighlights] = useState<string>("");
 
   useEffect(() => {
+    console.log("SERVER: ", server)
     const userid = sessionStorage.getItem("userId");
     const fetchProfile = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/profile?userid=${userid}`, {
+      const response = await fetch(`${server}/profile?userid=${userid}`, {
         method: "GET",
       });
       const resJson = await response.json();
