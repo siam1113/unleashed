@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useState } from "react";
 import TwoFactorAuth from "../components/2fa";
 import { useRouter } from "next/navigation";

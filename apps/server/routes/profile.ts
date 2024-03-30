@@ -1,22 +1,32 @@
-import { processAddExperience, processAddPersonality, processAddSkill, processGetProfile } from "../processors/profile";
+import { Request, Response } from "express";
+import { processAddExperience, processAddPersonality, processAddSkill, processGenerateHighlights, processGetProfile, processUploadPhoto } from "../processors/profile";
 
 const express = require("express");
 const profileRouter = express.Router();
 
-profileRouter.post("/skills", async (req: any, res: any) => {
+profileRouter.get("/", async (req: Request, res: Response) => {
+  await processGetProfile(req, res);
+});
+
+profileRouter.post("/skills", async (req: Request, res: Response) => {
   await processAddSkill(req, res);
 });
 
-profileRouter.post("/experiences", async (req: any, res: any) => {
+profileRouter.post("/experiences", async (req: Request, res: Response) => {
   await processAddExperience(req, res);
 });
 
-profileRouter.post("/personality", async (req: any, res: any) => {
+profileRouter.post("/personality", async (req: Request, res: Response) => {
   await processAddPersonality(req, res);
 });
 
-profileRouter.get("/", async (req: any, res: any) => {
-  await processGetProfile(req, res);
+profileRouter.post("/photo", async (req: any, res: Response) => {
+  await processUploadPhoto(req, res);
 });
+
+profileRouter.post("/generate-highlights", async (req: any, res: Response) => {
+  await processGenerateHighlights(req, res);
+});
+
 
 export { profileRouter };

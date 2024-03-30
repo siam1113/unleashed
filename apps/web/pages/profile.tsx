@@ -20,10 +20,12 @@ const emptyPersonality: PType = {
 }
 
 export default function Profile() {
-  const [activeTab, setActiveTab] = useState<ReactNode>(<ProfileHighlights />);
+  const [activeTab, setActiveTab] = useState<ReactNode>("Profile Highlights");
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [personality, setPersonality] = useState<PType>(emptyPersonality);
+  const [photo, setPhoto] = useState<string>("");
+  const [highlights, setHighlights] = useState<string>("");
 
   useEffect(() => {
     const userid = sessionStorage.getItem("userId");
@@ -35,30 +37,32 @@ export default function Profile() {
       console.log("PROFILE: ", resJson);
       return resJson["profile"];
     }
-
     fetchProfile().then((profile) => {
       if (profile) {
         console.log("SKILLS: ", profile.skills);
         console.log("EXPERIENCES: ", profile.experiences);
         setSkills([...profile.skills]);
         setExperiences([...profile.experiences]);
-        setPersonality(profile.personality);
+        profile.personality.traits != undefined && setPersonality(profile.personality);
+        setPhoto(profile.photo);
+        console.log("HIGHLIGHTS: ", profile.highlights);
+        setHighlights(profile.highlights);
         return;
       }
-    })
+    });
   }, [])
 
   return <div className="flex flex-col w-full h-full">
     <NavBar />
     <div className="w-full flex flex-col font-serif border border-primary rounded mt-2">
-      <div className="flex flex-row w-full h-full">
+      <div className="flex flex-row w-full">
         {
           ['Profile Highlights', 'Personality', 'Skills', 'Experiences'].map((item) => {
             return <span className="flex-1 p-3 text-white border rounded text-lg font-semibold bg-green-700 cursor-pointer font-sans" onClick={(e) => setActiveTab(e.currentTarget.textContent)}>{item}</span>
           })
         }
       </div>
-      {activeTab === 'Profile Highlights' && <ProfileHighlights />}
+      {activeTab === 'Profile Highlights' && <ProfileHighlights photo={photo} setPhoto={setPhoto} highlights={highlights} setHighlights={setHighlights} />}
       {activeTab === 'Personality' && <Personality personality={personality} setPersonality={setPersonality} />}
       {activeTab === 'Skills' && <Skills skills={skills} setSkills={setSkills} />}
       {activeTab === 'Experiences' && <Experiences experiences={experiences} setExperiences={setExperiences} />}

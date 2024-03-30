@@ -1,34 +1,9 @@
 import { useEffect, useState } from "react"
 import { Personality } from "../types/type"
+import { renderPersonality } from "../renderers/renderers"
 
 export function Personality({ personality, setPersonality }: { personality: Personality, setPersonality: Function }) {
   const [editPersonality, setEditPersonality] = useState<boolean>(false)
-  const renderPersonality = (personality: Personality) => {
-    return <div className="flex flex-col w-full h-full p-3">
-      <div className="flex flex-row">
-        <span className="text-4xl text-primary font-bold p-3">Personality Type: </span>
-        <span className="text-4xl text-primary font-bold p-3">{personality.type}</span>
-      </div>
-      <div className="flex flex-row">
-        <span className="text-2xl text-primary font-bold p-3">Provider: </span>
-        <span className="text-2xl text-primary font-bold p-3">{personality.provider}</span>
-      </div>
-      <div className="flex flex-col">
-        <h2 className="text-2xl text-primary font-bold p-3">Traits</h2>
-        <div className="flex flex-row">
-          {
-            Object.keys(personality.traits).map((trait) => {
-              return <div className="flex flex-col w-1/5 p-3 text-center">
-                <h3 className="text-lg font-semibold">{trait.toUpperCase()}</h3>
-                <p>{personality.traits[trait]}%</p>
-              </div>
-            })
-          }
-        </div>
-        <a href={personality.reportLink} className="text-2xl text-primary font-bold p-3">View Full Report</a>
-      </div>
-    </div>
-  }
 
   useEffect(() => {
     const addPersonality = async () => {
@@ -44,6 +19,7 @@ export function Personality({ personality, setPersonality }: { personality: Pers
     }
     addPersonality()
   }, [personality])
+
 
   return <div className="flex flex-col w-full h-full p-3">
     <div className="flex flex-row justify-between">
@@ -159,7 +135,7 @@ export function Personality({ personality, setPersonality }: { personality: Pers
           </div>
         </div>
       }
-      {true ? renderPersonality(personality) : <div className="flex flex-col mt-8 border rounded border-primary p-5">
+      {personality.provider ? renderPersonality(personality) : <div className="flex flex-col mt-8 border rounded border-primary p-5">
         <h4 className="text-2xl font-bold">No Experiences Added</h4>
       </div>}
     </div>

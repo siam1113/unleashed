@@ -13,4 +13,6 @@ export const SERVER_CONSTANTS = {
   experienceAdded: "Experience added successfully",
   personalityAdded: "Personality added successfully",
   somethingWentWrong: "Something went wrong, Check your data and Please try again",
+  photoUploaded: "Photo uploaded successfully",
+  highlightsGenerated: "Highlights generated successfully"
 }

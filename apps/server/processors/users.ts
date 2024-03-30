@@ -26,7 +26,7 @@ export const processSignup = async (req: Request, res: Response) => {
   const insertId = newUser["insertedId"];
 
   // create profile
-  await DB_QUERY("unleashed", createProfile, { userid: insertId.toString() });
+  await DB_QUERY("unleashed", createProfile, { userid: insertId.toString(), username: req.body.name });
 
   // save 2fa secret
   await DB_QUERY("unleashed", save2FAKey, { user: { userid: insertId.toString(), secret: secret.base32 } });
@@ -61,7 +61,6 @@ export const setup2FA = async (req: Request, res: Response) => {
   await DB_QUERY("unleashed", updateUser, { user: { userid: req.body.userId, enable2FA: verified } });
   return res.send({ userId: req.body.userId, verified, message: verified ? SERVER_CONSTANTS.twoFactorSetupSuccess : SERVER_CONSTANTS.twoFactorSetupFailed, statusCode: verified ? 200 : 401 });
 }
-
 
 const verify2FA = async (userId: string, code: string) => {
   const userSecret =

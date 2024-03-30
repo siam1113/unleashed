@@ -1,44 +1,53 @@
 import Image from "next/image"
+import { renderProfileHighlights } from "../renderers/renderers"
 Image
-export function ProfileHighlights() {
-  const profile = {
-    "Personality": {
-      "Innovative": "Push boundaries, seek new solutions.",
-      "Visionary": "See possibilities, foresee trends.",
-      "Determined": "Persist, achieve against odds."
-    },
-    "Skill": {
-      "Leadership": "Inspire, foster innovation.",
-      "Problem-solving": "Tackle challenges creatively.",
-      "Adaptability": "Adjust quickly, pivot when needed."
-    },
-    "Experience": {
-      "Entrepreneurship": "Lead successful ventures.",
-      "Space Exploration": "Make space travel affordable.",
-      "Electric Vehicles": "Drive innovation in transportation."
-    }
-  }
+export function ProfileHighlights(
+  { photo, setPhoto, highlights, setHighlights }: { photo: string, setPhoto: Function, highlights: string, setHighlights: Function }) {
 
-  const renderProfile = (profile: any) => {
-    return Object.keys(profile).map((key) => {
-      return <div className="flex flex-col w-full">
-        <h3 className="text-left text-3xl text-secondary font-bold mx-5 border-b-4 rounded my-3 p-1 border-secondary">{key}</h3>
-        <ul className="flex flex-col list-disc px-16">
-          {Object.keys(profile[key]).map((subKey) => {
-            return <li className="text-2xl my-3"><strong>{subKey}:</strong> {profile[key][subKey]}</li>
-          })}
-        </ul>
-      </div>
+  const handleFileUpload = async (e: any) => {
+    console.log(e.currentTarget.files)
+    const file = e.currentTarget.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("userid", sessionStorage.getItem("userId") as string);
+    const response = await fetch("http://localhost:8080/profile/photo", {
+      method: "POST",
+      body: formData
     })
+    const data = await response.json();
+    await setPhoto(data.photourl);
   }
 
-  return <div className="flex flex-row w-full h-full">
-    <div className="w-1/3 relative">
-      <Image src={"/person.jpg"} fill alt="signup" />
+  const handleGenerateProfileHighlights = async () => {
+    const response = await fetch("http://localhost:8080/profile/generate-highlights", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ userid: sessionStorage.getItem("userId") })
+    })
+    const data = await response.json();
+    console.log("GH: ", data);
+    await setHighlights(data.highlights);
+  }
+
+  return <div className="flex flex-row w-full h-full justify-between">
+    <div className="flex h-screen relative flex-1">
+      <Image src={photo ? photo : '/profile.png'} className="object-cover object-top" fill alt="signup" />
+      <input type="file" name="profilePhoto" className="w-full h-full absolute bottom-0 right-0 opacity-0"
+        placeholder="Upload Your Photo"
+        onInput={handleFileUpload}
+      />
+      {
+        !photo && <span className="absolute bottom-0 bg-white text-primary w-full font-semibold p-5 rounded cursor-pointer text-center">Upload Your Profile Photo</span>
+      }
     </div>
-    <div className="flex flex-col grow">
-      <h1 className="text-left text-4xl text-primary font-bold p-3">Profile Highlights</h1>
-      {renderProfile(profile)}
+    <div className="flex flex-col w-3/5 p-3">
+      <div className="w-full flex flex-row justify-between">
+        <h1 className="text-left text-4xl text-primary font-bold p-3">Profile Highlights</h1>
+        <button className="text-xl font-semibold text-white bg-secondary p-3 mx-3 rounded self-center h-1/8" onClick={handleGenerateProfileHighlights}> Generate Profile Highlights</button>
+      </div>
+      {renderProfileHighlights(highlights ? highlights.split("\n") : [])}
     </div>
-  </div>
+  </div >
 }

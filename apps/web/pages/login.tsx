@@ -1,10 +1,8 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../components/authenticator";
+import { useState } from "react";
 import TwoFactorAuth from "../components/2fa";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const context = useContext(AuthContext);
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +44,6 @@ export default function Login() {
     const resJson = await response.json();
     console.log(resJson);
     if (resJson.statusCode == 200 && userId) {
-      context.setIsAuthenticated(true);
       alert(resJson.message);
       sessionStorage.setItem("userId", userId);
       window.location.href = "/profile";
