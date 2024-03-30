@@ -1,13 +1,9 @@
 import { Button } from "@repo/ui";
-import { AuthContext } from "./authenticator";
-import { useContext } from "react";
 import { useRouter } from "next/navigation";
 
 export function NavBar() {
   const router = useRouter();
-  const context = useContext(AuthContext);
   const handleLogout = () => {
-    context.setIsAuthenticated(false);
     sessionStorage.removeItem("userId");
     router.push("/");
   }
