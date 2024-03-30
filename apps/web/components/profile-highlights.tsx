@@ -10,7 +10,7 @@ export function ProfileHighlights(
     const formData = new FormData();
     formData.append("file", file);
     formData.append("userid", sessionStorage.getItem("userId") as string);
-    const response = await fetch("http://localhost:8080/profile/photo", {
+    const response = await fetch("${process.env.SERVER}/profile/photo", {
       method: "POST",
       body: formData
     })
@@ -19,7 +19,7 @@ export function ProfileHighlights(
   }
 
   const handleGenerateProfileHighlights = async () => {
-    const response = await fetch("http://localhost:8080/profile/generate-highlights", {
+    const response = await fetch("${process.env.SERVER}/profile/generate-highlights", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
