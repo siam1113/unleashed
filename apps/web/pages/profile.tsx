@@ -3,10 +3,10 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "../components/authenticator";
 import { useContext } from "react";
 
-export default async function Profile() {
+export default function Profile() {
   const router = useRouter();
+  const context = useContext(AuthContext);
   const handleLogout = () => {
-    const context = useContext(AuthContext);
     context.setIsAuthenticated(false);
     router.push("/");
   }
