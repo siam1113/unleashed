@@ -1,6 +1,6 @@
-import { Authenticator } from "../components/authenticator";
-import { Dashboard } from "../components/dashboard";
+
+import Login from "./login";
 
 export default function Page() {
-  return <Authenticator> <Dashboard /></Authenticator>;
+  return <Login />
 }

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { DB_QUERY } from "../db/setup";
 import { SERVER_CONSTANTS } from "../constants/constants";
 import { createUser, get2FAKey, getUserByEmail, getUserByEmailPassword, save2FAKey, updateUser } from "../db/queries/users";
+import { createProfile } from "../db/queries/profile";
 
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
@@ -15,7 +16,7 @@ export const processSignup = async (req: Request, res: Response) => {
   }
 
   // generate 2fa secret
-  const secret = speakeasy.generateSecret({ length: 20 });
+  const secret = speakeasy.generateSecret({ length: 20, name: "Unleashed: " + req.body.email });
 
   // generate QR code
   const qrcode = await QRCode.toDataURL(secret.otpauth_url);
@@ -23,6 +24,9 @@ export const processSignup = async (req: Request, res: Response) => {
   // create user
   const newUser = await DB_QUERY("unleashed", createUser, { user: { ...req.body, qrcode: qrcode } });
   const insertId = newUser["insertedId"];
+
+  // create profile
+  await DB_QUERY("unleashed", createProfile, { userid: insertId.toString(), username: req.body.name });
 
   // save 2fa secret
   await DB_QUERY("unleashed", save2FAKey, { user: { userid: insertId.toString(), secret: secret.base32 } });
@@ -33,7 +37,9 @@ export const processSignup = async (req: Request, res: Response) => {
 }
 
 export const processLogin = async (req: Request, res: Response) => {
+  console.log(req.body);
   const user = await DB_QUERY("unleashed", getUserByEmailPassword, { user: req.body });
+  console.log(user);
   if (user.length === 0) {
     res.send({ message: SERVER_CONSTANTS.userDoesNotExist, stausCode: 404 });
     return;
@@ -55,7 +61,6 @@ export const setup2FA = async (req: Request, res: Response) => {
   await DB_QUERY("unleashed", updateUser, { user: { userid: req.body.userId, enable2FA: verified } });
   return res.send({ userId: req.body.userId, verified, message: verified ? SERVER_CONSTANTS.twoFactorSetupSuccess : SERVER_CONSTANTS.twoFactorSetupFailed, statusCode: verified ? 200 : 401 });
 }
-
 
 const verify2FA = async (userId: string, code: string) => {
   const userSecret =
