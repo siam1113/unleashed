@@ -21,14 +21,13 @@ export function Experiences({ experiences, setExperiences }: { experiences: Expe
 
   useEffect(() => {
     const addExperiences = async () => {
-      const response = await fetch("http://localhost:8080/profile/experiences", {
+      await fetch("http://localhost:8080/profile/experiences", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ userid: sessionStorage.getItem("userId"), experiences }),
       });
-      const resJson = await response.json();
     }
     addExperiences()
   }, [experiences])
