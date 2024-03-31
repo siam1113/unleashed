@@ -34,6 +34,13 @@ export function Skills({ skills, setSkills }: { skills: Skill[], setSkills: Reac
     setSkill(emptySkill)
   }
 
+  const deleteSkillHandler = async (e: any) => {
+    const skillName = e.target.value;
+    console.log("SKILL NAME: ", skillName);
+    const newSkills = skills.filter((skill) => skill.Name !== skillName);
+    setSkills(newSkills);
+  }
+
   return <div className="flex flex-row w-full h-full">
     <div className="flex flex-col w-full h-full p-3">
       <div className="flex flex-row justify-between">
@@ -117,7 +124,7 @@ export function Skills({ skills, setSkills }: { skills: Skill[], setSkills: Reac
       {skills.length == 0 ?
         <div className="flex flex-col mt-8 border rounded border-primary p-5">
           <h4 className="text-2xl font-bold">No Skills Added</h4>
-        </div> : renderSkills(skills)
+        </div> : renderSkills(skills, deleteSkillHandler)
       }
     </div>
   </div >

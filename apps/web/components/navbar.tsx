@@ -9,7 +9,7 @@ export function NavBar() {
 
   return <div className="w-full p-3 flex flex-row justify-between bg-primary mt-2">
     <ul className="flex flex-row">
-      <li className="p-3 text-white border border-primary rounded text-lg font-medium bg-green-700 me-1 cursor-pointer" onClick={() => router.push("/find/team")}>Find Your Team</li>
+      {/* <li className="p-3 text-white border border-primary rounded text-lg font-medium bg-green-700 me-1 cursor-pointer" onClick={() => router.push("/find/team")}>Find Your Team</li> */}
       <li className="p-3 text-white border border-primary rounded text-lg font-medium bg-green-700 me-1 cursor-pointer" onClick={() => router.push("/find/individual")}>Find Individual</li>
       <li className="p-3 text-white border border-primary rounded text-lg font-medium bg-green-700 me-1 cursor-pointer" onClick={() => router.push("/profile")}>Your Profile</li>
     </ul>

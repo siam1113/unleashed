@@ -33,6 +33,15 @@ export function Experiences({ experiences, setExperiences }: { experiences: Expe
     addExperiences()
   }, [experiences])
 
+  const deleteExpHandler = (e: any) => {
+    console.log(e.currentTarget.value)
+    const [role, company] = e.currentTarget.value.split('|')
+    console.log(role, company)
+    const filteredExperiences = experiences.filter((exp) => exp.Role != role && exp.Company != company);
+    setExperiences(filteredExperiences);
+  }
+
+
   return <div className="flex flex-col w-full p-3">
     <div className="flex flex-row justify-between">
       <h1 className="text-left text-4xl text-primary font-bold p-3">Experiences</h1>
@@ -106,7 +115,7 @@ export function Experiences({ experiences, setExperiences }: { experiences: Expe
         <div className="flex flex-col mt-8 border rounded border-primary p-5">
           <h4 className="text-2xl font-bold">No Experiences Added</h4>
         </div> :
-        renderExperience(experiences)
+        renderExperience(experiences, deleteExpHandler)
     }
   </div>
 }

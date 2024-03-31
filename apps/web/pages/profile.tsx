@@ -56,7 +56,7 @@ export default function Profile() {
 
   return <div className="flex flex-col w-full h-full">
     <NavBar />
-    <div className="w-full flex flex-col font-serif border border-primary rounded mt-2">
+    <div className="h-full flex flex-col font-serif border border-primary rounded mt-2 overflow-hidden p-3">
       <div className="flex flex-row w-full">
         {
           ['Profile Highlights', 'Personality', 'Skills', 'Experiences'].map((item) => {
@@ -65,9 +65,11 @@ export default function Profile() {
         }
       </div>
       {activeTab === 'Profile Highlights' && <ProfileHighlights photo={photo} setPhoto={setPhoto} highlights={highlights} setHighlights={setHighlights} />}
-      {activeTab === 'Personality' && <Personality personality={personality} setPersonality={setPersonality} />}
-      {activeTab === 'Skills' && <Skills skills={skills} setSkills={setSkills} />}
-      {activeTab === 'Experiences' && <Experiences experiences={experiences} setExperiences={setExperiences} />}
+      <div className="flex overflow-y-scroll">
+        {activeTab === 'Personality' && <Personality personality={personality} setPersonality={setPersonality} />}
+        {activeTab === 'Skills' && <Skills skills={skills} setSkills={setSkills} />}
+        {activeTab === 'Experiences' && <Experiences experiences={experiences} setExperiences={setExperiences} />}
+      </div>
     </div>
-  </div>
+  </div >
 }

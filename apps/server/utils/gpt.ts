@@ -15,10 +15,10 @@ const getReqBody = (
       {
         "role": "user",
         "content": `Generate a profile summary based on these info: 
-        Skills: ${skills},
-        Experiences: ${experiences},
-        Personality: ${personality}
-        `
+        Skills: ${skills.map(skill => skill.Name).join(', ')},
+        Experiences: ${experiences.map(experience => experience.Company).join(', ')},
+        Personality: ${personality.type}
+          `
       }
     ]
   };
@@ -31,7 +31,7 @@ export const generateProfileHighlights = async (
 ) => {
   try {
     const response = await fetch(
-      `${process.env.OPENAI_API_ENDPOINT}/chat/completions`,
+      `${process.env.OPENAI_API_ENDPOINT} / chat / completions`,
       {
         method: 'POST',
         headers: {

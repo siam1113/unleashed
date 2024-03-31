@@ -20,7 +20,7 @@ const emptyPersonality: Personality = {
 export default function Profile() {
   const router = useRouter();
   const { id } = router.query;
-  const [activeTab, setActiveTab] = useState<any>("Experiences");
+  const [activeTab, setActiveTab] = useState<any>("Profile Highlights");
   const [name, setName] = useState<string>("");
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -65,21 +65,23 @@ export default function Profile() {
         }
       </div>
     </div>
-    <div className="flex flex-col w-full h-full pt-14">
+    <div className="flex flex-col w-full h-full pt-14 overflow-hidden">
       {activeTab === 'Profile Highlights' &&
-        <div className="flex flex-row h-full w-full">
+        <div className="flex flex-row h-full w-full p-3">
           <div className="w-1/3 relative">
             <Image src={photo ? photo : '/profile.png'} fill alt="signup" />
           </div>
-          <div className="flex flex-col grow">
+          <div className="flex flex-col grow overflow-y-scroll">
             {renderProfileHighlights(highlights ? highlights.split("\n") : [])}
           </div>
         </div>
 
       }
-      {activeTab === 'Personality' && renderPersonality(personality)}
-      {activeTab === 'Skills' && renderSkills(skills)}
-      {activeTab === 'Experiences' && renderExperience(experiences)}
+      <div className="w-full h-full overflow-y-scroll p-3">
+        {activeTab === 'Personality' && renderPersonality(personality)}
+        {activeTab === 'Skills' && renderSkills(skills)}
+        {activeTab === 'Experiences' && renderExperience(experiences)}
+      </div>
     </div>
   </div>
 }

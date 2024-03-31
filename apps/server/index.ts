@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+import { findRouter } from "./routes/find";
 import { profileRouter } from "./routes/profile";
 import { userRouter } from "./routes/users";
 const dotenv = require('dotenv')
@@ -20,6 +21,7 @@ app.use(fileUpload({
 // Router
 app.use("/", userRouter);
 app.use("/profile", profileRouter);
+app.use("/find", findRouter);
 
 // Server
 app.listen(8080, () => {

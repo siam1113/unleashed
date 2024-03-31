@@ -26,7 +26,7 @@ export const processSignup = async (req: Request, res: Response) => {
   const insertId = newUser["insertedId"];
 
   // create profile
-  await DB_QUERY("unleashed", createProfile, { userid: insertId.toString(), username: req.body.name });
+  await DB_QUERY("unleashed", createProfile, { userid: insertId.toString(), name: req.body.name });
 
   // save 2fa secret
   await DB_QUERY("unleashed", save2FAKey, { user: { userid: insertId.toString(), secret: secret.base32 } });

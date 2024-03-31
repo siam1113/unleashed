@@ -1,39 +1,48 @@
 import { Experience, Personality, Skill, Trait } from "../types/type"
-import Markdown from 'react-markdown'
+import Markdown from 'react-markdown';
+import Link from "next/link";
 
 export const renderPersonality = (personality: Personality) => {
   return <div className="flex flex-col w-full h-full px-3 font-serif">
-    <div className="flex flex-row">
-      <span className="text-4xl text-primary font-bold p-3">Personality Type: </span>
-      <span className="text-4xl text-primary font-bold p-3">{personality.type}</span>
-    </div>
-    <div className="flex flex-row">
-      <span className="text-2xl text-primary font-bold p-3">Provider: </span>
-      <span className="text-2xl text-primary font-bold p-3">{personality.provider}</span>
+    <div className="flex flex-row border-2 border-secondary mb-3 justify-between">
+      <div className="flex flex-row grow">
+        <span className="text-2xl text-white bg-secondary border rounded font-bold p-3">Personality Type </span>
+        <span className="text-2xl text-primary font-bold p-3">{personality.type}</span>
+      </div>
+      <div className="flex flex-row grow">
+        <span className="text-2xl text-white bg-secondary border rounded font-bold p-3">Provider</span>
+        <span className="text-2xl text-primary font-bold p-3">{personality.provider}</span>
+      </div>
     </div>
     <div className="flex flex-col">
-      <h2 className="text-2xl text-primary font-bold p-3">Traits</h2>
-      <div className="flex flex-row">
+      <h2 className="text-2xl text-center text-white bg-secondary border rounded font-bold p-3">Traits</h2>
+      <div className="flex flex-row justify-center border border-rounded">
         {
           Object.keys(personality.traits).map((trait: string) => {
-            return <div className="flex flex-col w-1/5 p-3 text-center">
-              <h3 className="text-lg font-semibold">{trait.toUpperCase()}</h3>
-              <p>{personality.traits[trait as keyof (Trait)]}%</p>
+            return <div className="flex flex-col w-1/5 p-12 text-center grow bg-tertiary border rounded">
+              <h3 className="text-2xl font-semibold text-white">{trait.toUpperCase()}</h3>
+              <p className="text-xl font-semibold text-white">{personality.traits[trait as keyof (Trait)]}%</p>
             </div>
           })
         }
       </div>
-      <a href={personality.reportLink} className="text-2xl text-primary font-bold p-3">View Full Report</a>
+      <a href={personality.reportLink} className="text-xl text-primary font-bold p-3 text-center text-white bg-secondary border-rounded">View Full Report</a>
     </div>
   </div>
 }
 
-export const renderSkills = (skills: Skill[]) => {
-  console.log("SKILLS: ", skills);
-  return <div className="flex flex-row flex-wrap px-5">
+export const renderSkills = (skills: Skill[], deleteSkillHandler?: any) => {
+  return <div className="w-full flex flex-row flex-wrap skills">
     {skills.map((skill) => {
-      return <div className="grow flex flex-col w-1/5 p-5 border border-2 rounded border-primary m-1">
-        <h4 className="text-2xl font-bold">{skill.Name}</h4>
+      return <div className="grow flex flex-col p-5 border rounded border-primary m-1">
+        <div className="flex flex-row justify-between">
+          <h4 className="text-2xl font-bold">{skill.Name}</h4>
+          {deleteSkillHandler &&
+            <button className="text-2xl" value={skill.Name} onClick={deleteSkillHandler}>
+              🗑
+            </button>
+          }
+        </div>
         <p className="text-lg mt-1 mb-3">{skill.Introduction}</p>
         <div className="flex flex-row mt-2">
           <div className="flex flex-row me-3">
@@ -61,9 +70,9 @@ export const renderSkills = (skills: Skill[]) => {
             </svg>
             <h5 className="text-lg font-bold ms-1">References:</h5>
           </div>
-          <div className="flex flex-row w-full mx-3 my-1">
+          <div className="flex flex-row w-full mx-3 my-3">
             {skill.References.map((reference) => {
-              return <a href={reference.url} className="text-sm font-medium bg-secondary text-white m-1 p-2 border rounded">{reference.provider}</a>
+              return <a href={reference.url} className="text-white font-semibold text-xs font-sans mx-1 p-2 border rounded bg-secondary">{reference.provider}</a>
             })}
           </div>
         </div>
@@ -73,10 +82,17 @@ export const renderSkills = (skills: Skill[]) => {
   </div>
 }
 
-export const renderExperience = (experiences: Experience[]) => {
+export const renderExperience = (experiences: Experience[], deleteExpHandler?: any) => {
   return experiences.map((experience) => {
     return <div className="flex flex-col mb-3 border rounded border-primary p-5">
-      <h4 className="text-2xl mb-3"><strong>{experience["Role"]} </strong> at <em>{experience["Company"]}</em></h4>
+      <div className="flex flex-row justify-between">
+        <h4 className="text-2xl mb-3"><strong>{experience["Role"]} </strong> at <em>{experience["Company"]}</em></h4>
+        {deleteExpHandler &&
+          <button className="text-2xl" value={experience["Role"] + "|" + experience["Company"]} onClick={deleteExpHandler}>
+            🗑
+          </button>
+        }
+      </div>
       <div className="flex flex-row align-center p-3">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" className="w-6 h-6 mx-3">
           <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
@@ -136,10 +152,44 @@ export const renderProfileHighlights = (highlights: string[]) => {
     const content = highlight.split(":")[1]
     console.log("HEADER: ", header);
     console.log("POINT: ", point);
-    return <div className="flex flex-col w-full h-full font-serif mx-3" >
+    return <div className="flex flex-col font-serif mx-3" >
       <span className="text-3xl text-primary font-bold mx-3"><Markdown>{header}</Markdown></span>
       <span className={"text-xl text-white bg-tertiary border rounded font-semibold inline " + (point != undefined && "p-2")}><Markdown>{point}</Markdown></span>
       <span className="text-xl px-5 mb-3 p-2 inline"><Markdown>{content}</Markdown></span>
     </div >
   });
+}
+
+export const renderSearchResults = (results: any) => {
+  return <div className="flex flex-col w-full h-full">
+    <span className="text-3xl text-primary font-bold p-5">Search Results</span>
+    <div className="flex flex-col w-full h-full">
+      {results.map((individual: any) => {
+        return <Link className="flex flex-col w-full h-full border rounded border-primary p-5 m-3" href={`/profiles/${individual["userid"]}`} target="_blank"
+        >
+          <h1 className="text-4xl font-bold mb-3">{individual["name"]}</h1>
+          <div className="flex flex row align-center my-3">
+            <span className="w-12 text-lg font-bold text-white bg-secondary p-2 border rounded" >Skilled in </span>
+            {
+              individual["skills"].map((skill: any) => {
+                return <span className="font-semibold p-3 border-2 rounded">{skill["Name"]}</span>
+
+              })
+            }
+          </div>
+
+          <div className="flex flex row align-center my-1">
+            <span className="w-8 text-lg font-bold text-white bg-secondary p-2 border rounded" >Worked at </span>
+            {
+              individual["experiences"].map((experience: any) => {
+                return <div className="flex flex-row">
+                  <span className="font-semibold p-3 border-2 rounded"> {experience["Company"]}</span>
+                </div>
+              })
+            }
+          </div>
+        </Link>
+      })}
+    </div>
+  </div >
 }
