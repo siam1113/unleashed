@@ -48,7 +48,7 @@ export function ProfileHighlights(
         <h1 className="text-left text-4xl text-primary font-bold p-3">Profile Highlights</h1>
         <button className="text-xl font-semibold text-white bg-secondary p-3 mx-3 rounded self-center h-1/8" onClick={handleGenerateProfileHighlights}> Generate Profile Highlights</button>
       </div>
-      {renderProfileHighlights(highlights ? highlights.split("\n") : [])}
+      {renderProfileHighlights(highlights)}
     </div>
   </div >
 }

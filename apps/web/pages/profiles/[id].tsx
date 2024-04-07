@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { renderExperience, renderPersonality, renderProfileHighlights, renderSkills } from "../../renderers/renderers";
 import { Experience, Skill, Personality } from "../../types/type";
 import Image from "next/image"
+import { Loader } from "../../components/loader";
 const server = process.env.NEXT_PUBLIC_SERVER;
 const emptyPersonality: Personality = {
   provider: "",
@@ -27,6 +28,7 @@ export default function Profile() {
   const [personality, setPersonality] = useState<Personality>(emptyPersonality);
   const [photo, setPhoto] = useState<string>("");
   const [highlights, setHighlights] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   console.log("ID: ", id);
 
@@ -36,10 +38,12 @@ export default function Profile() {
         method: "GET",
       });
       const resJson = await response.json();
-      return resJson["profile"];
+      return resJson;
     }
 
-    fetchProfile().then((profile) => {
+    setLoading(true);
+    fetchProfile().then((response) => {
+      const profile = response["profile"];
       if (profile) {
         setSkills([...profile.skills]);
         setExperiences([...profile.experiences]);
@@ -47,10 +51,20 @@ export default function Profile() {
         setPhoto(profile.photo);
         setHighlights(profile.highlights);
         setName(profile.name);
+        setLoading(false);
+        return;
+      } else {
+        setLoading(false);
         return;
       }
     });
   }, [id])
+
+  if (loading) return <Loader />;
+  if (!name) return <div className="flex flex-col h-full w-full align-center justify-center">
+    <span className="text-4xl self-center">😕</span>
+    <strong className="text-xl self-center">Profile Not Found</strong>
+  </div>
 
   return <div className="flex flex-col w-full h-full border">
     <div className="flex flex-row w-full bg-primary fixed top-0 z-10">
@@ -68,11 +82,11 @@ export default function Profile() {
     <div className="flex flex-col w-full h-full pt-14 overflow-hidden">
       {activeTab === 'Profile Highlights' &&
         <div className="flex flex-row h-full w-full p-3">
-          <div className="w-1/3 relative">
+          <div className="w-1/3 relative h-screen">
             <Image src={photo ? photo : '/profile.png'} fill alt="signup" />
           </div>
           <div className="flex flex-col grow overflow-y-scroll">
-            {renderProfileHighlights(highlights ? highlights.split("\n") : [])}
+            {renderProfileHighlights(highlights)}
           </div>
         </div>
 

@@ -32,6 +32,12 @@ export const renderPersonality = (personality: Personality) => {
 }
 
 export const renderSkills = (skills: Skill[], deleteSkillHandler?: any) => {
+  if (skills.length == 0) {
+    return <div className="flex flex-col w-full h-full">
+      <span className="text-3xl text-primary font-bold p-5">No Skills Added Yet</span>
+    </div>
+  }
+
   return <div className="w-full flex flex-row flex-wrap skills">
     {skills.map((skill) => {
       return <div className="grow flex flex-col p-5 border rounded border-primary m-1">
@@ -83,6 +89,12 @@ export const renderSkills = (skills: Skill[], deleteSkillHandler?: any) => {
 }
 
 export const renderExperience = (experiences: Experience[], deleteExpHandler?: any) => {
+  if (experiences.length == 0) {
+    return <div className="flex flex-col w-full h-full">
+      <span className="text-3xl text-primary font-bold p-5">No Experiences Added Yet</span>
+    </div>
+  }
+
   return experiences.map((experience) => {
     return <div className="flex flex-col mb-3 border rounded border-primary p-5">
       <div className="flex flex-row justify-between">
@@ -139,7 +151,9 @@ export const renderExperience = (experiences: Experience[], deleteExpHandler?: a
   })
 }
 
-export const renderProfileHighlights = (highlights: string[]) => {
+export const renderProfileHighlights = (highlightsString: string) => {
+  const highlights = highlightsString ? highlightsString.split("\n") : [];
+
   if (highlights.length == 0) {
     return <div className="flex flex-col w-full h-full">
       <span className="text-3xl text-primary font-bold p-5">No Highlights Generated Yet</span>

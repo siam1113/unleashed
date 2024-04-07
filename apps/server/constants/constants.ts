@@ -14,5 +14,6 @@ export const SERVER_CONSTANTS = {
   personalityAdded: "Personality added successfully",
   somethingWentWrong: "Something went wrong, Check your data and Please try again",
   photoUploaded: "Photo uploaded successfully",
-  highlightsGenerated: "Highlights generated successfully"
+  highlightsGenerated: "Highlights generated successfully",
+  profileNotFound: "Profile not found"
 }

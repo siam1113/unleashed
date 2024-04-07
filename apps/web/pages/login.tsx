@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TwoFactorAuth from "../components/2fa";
 import { useRouter } from "next/navigation";
 
@@ -10,8 +10,8 @@ export default function Login() {
   const [userId, setUserId] = useState(undefined);
   const [qrCode, setQrCode] = useState(undefined);
   const [enabled2FA, setEnabled2FA] = useState(false);
-
   const server = process.env.NEXT_PUBLIC_SERVER;
+
   const handleLogin = async (e: any) => {
     e.preventDefault();
     console.log(email, password);

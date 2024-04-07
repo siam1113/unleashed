@@ -15,12 +15,11 @@ export const processAddSkill = async (req: Request, res: Response) => {
 }
 
 export const processGetProfile = async (req: Request, res: Response) => {
-  console.log("req.query", req.query);
   const { userid } = req.query;
   console.log("userid", userid);
   const profile = await DB_QUERY("unleashed", getProfile, { userid });
   console.log("skills", profile);
-  profile ? res.send({ profile, statusCode: 200 }) : res.send({ message: SERVER_CONSTANTS.somethingWentWrong, statusCode: 500 });
+  profile ? res.send({ profile, statusCode: 200 }) : res.send({ message: SERVER_CONSTANTS.profileNotFound, statusCode: 500 });
 }
 
 export const processAddExperience = async (req: Request, res: Response) => {
