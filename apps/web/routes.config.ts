@@ -1,3 +1,3 @@
 export default {
-  PUBLIC: [/\profiles\/.+/, /\/signup/]
+  PUBLIC: [/\profiles\/.+/, /\/signup/, /\/login/]
 }

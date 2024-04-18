@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Login from "../pages/login";
 import ROUTES from "../routes.config";
 import { pathMatched } from "../utils/pathMatcher";
+import SignUp from "../pages/signup";
 
 export function Authenticator({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<string | null>(null)
@@ -17,7 +18,7 @@ export function Authenticator({ children }: { children: React.ReactNode }) {
 
   return <>
     {
-      session ? children : isPublicRoute ? children : <Login />
+      isPublicRoute ? children : session ? children : <SignUp />
     }
   </>
 }

@@ -1,12 +1,4 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import Profile from "./profile";
-
+import Login from "./login";
 export default function Page() {
-  const router = useRouter()
-  useEffect(() => {
-    router.replace('/profile');
-  });
-
-  return <Profile />;
+  return <Login />;
 }
