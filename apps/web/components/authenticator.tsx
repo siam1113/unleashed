@@ -18,7 +18,7 @@ export function Authenticator({ children }: { children: React.ReactNode }) {
 
   return <>
     {
-      isPublicRoute ? children : session ? children : <SignUp />
+      isPublicRoute ? children : session ? children : <Login />
     }
   </>
 }
