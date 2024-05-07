@@ -31,7 +31,7 @@ export const generateProfileHighlights = async (
 ) => {
   try {
     const response = await fetch(
-      `${process.env.OPENAI_API_ENDPOINT} / chat / completions`,
+      `${process.env.OPENAI_API_ENDPOINT}/chat/completions`,
       {
         method: 'POST',
         headers: {
