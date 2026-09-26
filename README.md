@@ -1,81 +1,45 @@
-# Turborepo starter
+# Unleashed
 
-This is an official starter Turborepo.
+Unleashed is a profile search web application. It lets signed-in users search for and browse profiles, with AI-assisted search and image uploads.
 
-## Using this example
+## Features
 
-Run the following command:
+- User authentication (sign up / sign in)
+- Profile search, with GPT-assisted query handling
+- Image uploads via Cloudinary
+- Web front end and a separate API server
 
-```sh
-npx create-turbo@latest
+## Project structure
+
+This is a Turborepo monorepo containing:
+
+- `apps/web` — the Next.js front end
+- `apps/server` (or similar) — an Express/TypeScript API handling authentication, profile search, and file uploads
+- `packages/` — shared UI components, ESLint config, and TypeScript config used across the apps
+
+## Getting started
+
+Install dependencies from the repository root:
+
+```bash
+pnpm install
 ```
 
-## What's inside?
+Run everything in development mode:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
+```bash
 pnpm dev
 ```
 
-### Remote Caching
+Build all apps and packages:
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+pnpm build
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Tech stack
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- Next.js (front end)
+- Express + TypeScript (API)
+- Cloudinary (image storage)
+- Turborepo (monorepo tooling)
